@@ -26,7 +26,13 @@ class FirebaseApi {
   Future<void> changeLEDstatus(
     bool status,
   ) async {
+    // Validate if the server key is present
+    if (dotenv.env['SERVER_KEY'] == null) {
+      // ignore: avoid_print
+      return print('SERVER_KEY not found in .env file');
+    }
     final String serverKey = dotenv.env['SERVER_KEY'] ?? '';
+
     final Uri fcmUrl = Uri.parse('https://fcm.googleapis.com/fcm/send');
 
     final headers = {
