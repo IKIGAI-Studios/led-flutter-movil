@@ -10,24 +10,29 @@ class FcmApi {
     }
     final String serverKey = dotenv.env['SERVER_KEY'] ?? '';
 
-    final Uri fcmUrl = Uri.parse('https://fcm.googleapis.com/fcm/send');
+    final Uri fcmUrl = Uri.parse(
+        'https://fcm.googleapis.com/v1/projects/push-notifications-wear/messages:send');
 
     final headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'key=$serverKey',
+      'Authorization': 'Bearer $serverKey',
     };
 
     final requestBody = jsonEncode({
-      'notification': {
-        'title': 'LED status changed',
-        'body': status ? 'LED is now ON' : 'LED is now OFF',
-      },
-      'priority': 'high',
-      'data': {
-        'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-        'status': 'done',
-      },
-      'to': 'led/actions',
+      'message': {
+        'notification': {
+          'topic': 'led/actions',
+          'title': 'LED status changed',
+          'body': status ? 'LED is now ON' : 'LED is now OFF',
+        },
+        'android': {
+          'priority': 'high',
+        },
+        'data': {
+          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
+          'status': 'done',
+        },
+      }
     });
 
     final response =
