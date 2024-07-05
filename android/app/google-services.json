@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "534038076469",
+    "project_id": "push-notifications-wear",
+    "storage_bucket": "push-notifications-wear.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534038076469:android:6d9ad662c0af6783e1a57c",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQmwLTzsoal25ayi58ck0lgMXCrYDVDVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534038076469:android:19bd4e04f1187f57e1a57c",
+        "android_client_info": {
+          "package_name": "com.example.weartest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQmwLTzsoal25ayi58ck0lgMXCrYDVDVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
