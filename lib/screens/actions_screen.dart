@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:led_flutter_movil/api/fcm_api.dart';
 
 
 class ActionsScreen extends StatefulWidget {
@@ -28,6 +29,8 @@ class ActionsScreenState extends State<ActionsScreen> {
 
   bool _ledState = false;
   bool _isDiscoveringServices = false;
+
+  FcmApi fcmApi = FcmApi();
 
   @override
   void initState() {
@@ -100,6 +103,7 @@ class ActionsScreenState extends State<ActionsScreen> {
 
       if (_characteristic != null) {
         sendLedCommand(_characteristic!, value);
+        fcmApi.changeLEDstatus(value);
       }
     });
   }

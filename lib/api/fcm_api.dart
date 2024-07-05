@@ -30,8 +30,9 @@ class FcmApi {
       }
     });
 
-    final response =
-        await http.post(fcmUrl, headers: headers, body: requestBody);
+    final response = await http.post(fcmUrl, headers: headers, body: requestBody);
+
+    print(response);
 
     if (response.statusCode == 200) {
       // ignore: avoid_print
