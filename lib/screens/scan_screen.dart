@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:led_flutter_movil/screens/actions_screen.dart';
 
 import 'device_screen.dart';
 import '../utils/snackbar.dart';
@@ -80,7 +81,7 @@ class _ScanScreenState extends State<ScanScreen> {
       Snackbar.show(ABC.c, prettyException("Connect Error:", e), success: false);
     });
     MaterialPageRoute route = MaterialPageRoute(
-        builder: (context) => DeviceScreen(device: device), settings: const RouteSettings(name: '/DeviceScreen'));
+        builder: (context) => ActionsScreen(device: device), settings: const RouteSettings(name: '/ActionsScreen'));
     Navigator.of(context).push(route);
   }
 

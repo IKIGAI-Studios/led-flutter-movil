@@ -1,14 +1,50 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+
 
 class ActionsScreen extends StatefulWidget {
-  const ActionsScreen({Key? key}) : super(key: key);
+  final BluetoothDevice device;
+
+  const ActionsScreen({Key? key, required this.device}) : super(key: key);
 
   @override
   ActionsScreenState createState() => ActionsScreenState();
 }
 
 class ActionsScreenState extends State<ActionsScreen> {
-  var _ledState = false;
+  List<BluetoothService> _services = [];
+  BluetoothCharacteristic? _characteristic;
+
+  // Información del ESP32
+  final serviceUUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
+  final characteristicUUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
+
+  bool _ledState = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getService();
+  }
+
+  getService() async {
+    _services = await widget.device.discoverServices();
+    _characteristic = _services
+        .expand((service) => service.characteristics)
+        .firstWhere((characteristic) => characteristic.uuid.toString() == characteristicUUID);
+    
+    print(_characteristic);
+  }
+
+  void sendLedCommand(BluetoothCharacteristic characteristic, bool turnOn) {
+    String command = turnOn ? "on" : "off";
+    List<int> bytes = utf8.encode(command);
+    characteristic.write(bytes);
+  }   
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +73,10 @@ class ActionsScreenState extends State<ActionsScreen> {
   void onChangedHandler(bool value) {
     setState(() {
       _ledState = value;
+
+      if (_characteristic != null) {
+        sendLedCommand(_characteristic!, value);
+      }
     });
   }
 }
