@@ -11,6 +11,7 @@ bool oldDeviceConnected = false;
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
+int LED_PIN = 22;
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -34,11 +35,11 @@ class MyCallbacks: public BLECharacteristicCallbacks {
       Serial.println(value);
 
       if (value == "on") {
-        //digitalWrite(LED_PIN, HIGH);  // Enciende el LED
-        Serial.println("Aquí se prende xd");
+        digitalWrite(LED_PIN, LOW);  // Enciende el LED
+        Serial.println("Encendido");
       } else if (value == "off") {
-        //digitalWrite(LED_PIN, LOW);   // Apaga el LED
-        Serial.println("Aquí se apaga xd");
+        digitalWrite(LED_PIN, HIGH);   // Apaga el LED
+        Serial.println("Apagado");
       } else {
         Serial.println("Received invalid value");
       }
@@ -52,6 +53,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
 void setup() {
   Serial.begin(115200);
+
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, HIGH);
 
   // Create the BLE Device
   BLEDevice::init("ESP32 LED CONTROLLER");
