@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -17,32 +18,54 @@ class ActionsScreenState extends State<ActionsScreen> {
   List<BluetoothService> _services = [];
   BluetoothCharacteristic? _characteristic;
 
+  BluetoothConnectionState _connectionState = BluetoothConnectionState.disconnected;
+
+  late StreamSubscription<BluetoothConnectionState> _connectionStateSubscription;
+
   // Información del ESP32
   final serviceUUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
   final characteristicUUID = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
 
   bool _ledState = false;
+  bool _isDiscoveringServices = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _isDiscoveringServices = true;
+    });
 
-    getService();
-  }
-
-  getService() async {
-    _services = await widget.device.discoverServices();
-    _characteristic = _services
-        .expand((service) => service.characteristics)
-        .firstWhere((characteristic) => characteristic.uuid.toString() == characteristicUUID);
-    
-    print(_characteristic);
+    _connectionStateSubscription = widget.device.connectionState.listen((state) async {
+      _connectionState = state;
+      if (state == BluetoothConnectionState.connected) {
+        try {
+          _services = await widget.device.discoverServices();
+          _characteristic = _services
+              .expand((service) => service.characteristics)
+              .firstWhere((characteristic) => characteristic.uuid.toString() == characteristicUUID);
+        }
+        catch (e) {
+          print("Error discovering services: $e");
+        } 
+        finally {
+          setState(() {
+            _isDiscoveringServices = false;
+          });
+        }
+      }
+    });
   }
 
   void sendLedCommand(BluetoothCharacteristic characteristic, bool turnOn) {
-    String command = turnOn ? "on" : "off";
-    List<int> bytes = utf8.encode(command);
-    characteristic.write(bytes);
+    if (_characteristic != null) {
+      String command = turnOn ? "on" : "off";
+      List<int> bytes = utf8.encode(command);
+      _characteristic!.write(bytes);
+      setState(() {
+        _ledState = turnOn;
+      });
+    }
   }   
 
   @override
@@ -54,7 +77,9 @@ class ActionsScreenState extends State<ActionsScreen> {
         backgroundColor: const Color.fromRGBO(26, 26, 26, 1),
         centerTitle: true,
       ),
-      body: Center(
+      body: _isDiscoveringServices
+        ? const Center(child: CircularProgressIndicator())
+        : Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
