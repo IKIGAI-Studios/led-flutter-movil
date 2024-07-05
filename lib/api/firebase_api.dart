@@ -50,7 +50,7 @@ class FirebaseApi {
         'click_action': 'FLUTTER_NOTIFICATION_CLICK',
         'status': 'done',
       },
-      'to': '/led/actions',
+      'to': 'led/actions',
     });
 
     final response =
