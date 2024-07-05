@@ -19,19 +19,14 @@ class FcmApi {
     };
 
     final requestBody = jsonEncode({
-      'message': {
-        'notification': {
-          'topic': 'led/actions',
-          'title': 'LED status changed',
-          'body': status ? 'LED is now ON' : 'LED is now OFF',
+      "message": {
+        "topic": "led",
+        "notification": {
+          "title": "LED status changed",
+          "body": status ? "LED is ON" : "LED is OFF"
         },
-        'android': {
-          'priority': 'high',
-        },
-        'data': {
-          'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-          'status': 'done',
-        },
+        "android": {"priority": "high", "direct_boot_ok": true},
+        "data": {"click_action": "FLUTTER_NOTIFICATION_CLICK", "status": "done"}
       }
     });
 

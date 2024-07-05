@@ -1,0 +1,17 @@
+{
+        "message": {
+              "topic": "led",
+                "notification": {
+                        "title": "LED status changed",
+                        "body": "LED is now OFF"
+                },
+                "android": {
+                        "priority": "high",
+                        "direct_boot_ok": true
+                },
+                "data": {
+                        "click_action": "FLUTTER_NOTIFICATION_CLICK",
+                        "status": "done"
+                }
+        }
+}
