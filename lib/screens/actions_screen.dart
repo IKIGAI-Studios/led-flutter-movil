@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:led_flutter_movil/api/fcm_api.dart';
@@ -108,6 +109,14 @@ class ActionsScreenState extends State<ActionsScreen> {
       if (_characteristic != null) {
         sendLedCommand(_characteristic!, value);
         fcmApi.changeLEDstatus(value);
+        AwesomeNotifications().createNotification(
+        content: NotificationContent(
+          id: 1, 
+          channelKey: 'basic_channel',
+          title: 'El LED ha cambiado',
+          body: 'Ahora el led está ${value ? 'encendido': 'apagado'}'
+        )
+      );
       }
     });
   }

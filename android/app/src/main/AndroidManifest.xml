@@ -14,6 +14,10 @@
     <!-- legacy for Android 9 or lower -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" android:maxSdkVersion="28" />
 
+    <!-- Awesome Notifications permissions -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:label="Control LED"
         android:name="${applicationName}"
