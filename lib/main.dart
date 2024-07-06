@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:led_flutter_movil/controllers/notification_controller.dart';
 import 'package:led_flutter_movil/screens/scan_screen.dart';
 import 'screens/bluetooth_off_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,6 +11,32 @@ void main() async {
   FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
   // Load .env file
   await dotenv.load(fileName: ".env");
+  // 'resource://drawable/res_app_icon'
+  await AwesomeNotifications().initialize(
+    null,
+    [
+      NotificationChannel(
+        channelGroupKey: 'basic_channel_group',
+        channelKey: 'basic_channel',
+        channelName: 'Basic notifications',
+        channelDescription: 'Notification channel for basic tests',
+        defaultColor: Color(0xFF9D50DD)
+      )
+    ],
+    channelGroups: [
+      NotificationChannelGroup(
+        channelGroupKey: 'basic_channel_group', 
+        channelGroupName: 'Basic Group'
+      )
+    ]
+  );
+
+  bool isNotificationAllowed = await AwesomeNotifications().isNotificationAllowed();
+
+  if (!isNotificationAllowed) {
+    await AwesomeNotifications().requestPermissionToSendNotifications();
+  }
+
   runApp(const FlutterBlueApp());
 }
 
@@ -38,6 +66,13 @@ class _FlutterBlueAppState extends State<FlutterBlueApp> {
         setState(() {});
       }
     });
+
+    AwesomeNotifications().setListeners(
+      onActionReceivedMethod: NotificationController.onActionReceivedMethod, 
+      onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod, 
+      onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod: NotificationController.onActionReceivedMethod
+    );
   }
 
   @override

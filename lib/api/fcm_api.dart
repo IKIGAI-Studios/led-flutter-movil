@@ -30,16 +30,20 @@ class FcmApi {
       }
     });
 
-    final response = await http.post(fcmUrl, headers: headers, body: requestBody);
-
-    print(response);
-
-    if (response.statusCode == 200) {
+    try {
+      final response = await http.post(fcmUrl, headers: headers, body: requestBody);
+    
+      if (response.statusCode == 200) {
+        // ignore: avoid_print
+        print('Notificación enviada correctamente');
+      } else {
+        // ignore: avoid_print
+        print('Error al enviar notificación: ${response.body}');
+      }
+    }
+    catch(e) {
       // ignore: avoid_print
-      print('Notificación enviada correctamente');
-    } else {
-      // ignore: avoid_print
-      print('Error al enviar notificación: ${response.body}');
+      print(e);
     }
   }
 }
