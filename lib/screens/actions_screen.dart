@@ -88,9 +88,9 @@ class ActionsScreenState extends State<ActionsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _ledState
-            ? Icon(Icons.lightbulb, color: Colors.blueAccent, size: 300)
-            : Icon(Icons.lightbulb_outline, color: Colors.grey, size: 300),
-            SizedBox(height: 40, width: double.infinity),
+            ? const Icon(Icons.lightbulb, color: Colors.blueAccent, size: 300)
+            : const Icon(Icons.lightbulb_outline, color: Colors.grey, size: 300),
+            const SizedBox(height: 40, width: double.infinity),
             Text(_ledState ? 'Encendido' : 'Apagado', style: const TextStyle(color: Colors.white)),
             Switch(
               value: _ledState,
