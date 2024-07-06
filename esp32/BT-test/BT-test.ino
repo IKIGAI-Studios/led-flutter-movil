@@ -21,6 +21,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
 
     void onDisconnect(BLEServer* pServer) {
       deviceConnected = false;
+      digitalWrite(LED_PIN, HIGH);
     }
 };
 
